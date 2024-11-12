@@ -49,7 +49,7 @@ const SearchBar = React.memo(({ className, query, active }) => {
     }, [searchHistoryOnClose]);
 
     const queryInputOnChange = React.useCallback(() => {
-        const value = searchInputRef.current.value;
+        const value = searchInputRef.current.value.replaceAll(/'/g, '');
         setCurrentQuery(value);
         openHistory();
         try {
@@ -61,7 +61,7 @@ const SearchBar = React.memo(({ className, query, active }) => {
 
     const queryInputOnSubmit = React.useCallback((event) => {
         event.preventDefault();
-        const searchValue = `/search?search=${event.target.value}`;
+        const searchValue = `/search?search=${event.target.value.replaceAll(/'/g, '')}`;
         setCurrentQuery(searchValue);
         if (searchInputRef.current && searchValue) {
             window.location.hash = searchValue;
@@ -140,7 +140,7 @@ const SearchBar = React.memo(({ className, query, active }) => {
                                     </div>
                                     {
                                         searchHistory.items.slice(0, 8).map(({ query, deepLinks }, index) => (
-                                            <Button key={index} className={styles['item']} href={deepLinks.search} onClick={closeHistory}>
+                                            <Button key={index} className={styles['item']} href={deepLinks.search.replaceAll(/'/g, '')} onClick={closeHistory}>
                                                 {query}
                                             </Button>
                                         ))
